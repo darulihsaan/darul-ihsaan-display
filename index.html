@@ -8,16 +8,19 @@
   /*
     BANNER REMOVAL WRAPPER
 
-    Google Apps Script web apps include a 40px branded banner at the top
-    that says "This application was created by a Google Apps Script user".
-    It cannot be hidden from inside the Apps Script itself (it lives in a
-    Google-controlled iframe outer shell).
+    Google Apps Script web apps include a banner at the top.
+    We push the iframe up by exactly the banner height so its
+    bottom edge aligns with the viewport bottom.
 
-    The fix: embed the Apps Script URL in our OWN iframe, but make the
-    iframe taller than the viewport, positioned with its top scrolled past
-    the banner. The banner is technically still rendered, but pushed off
-    the top edge of the visible area.
+    BANNER_HEIGHT tuning:
+      The default Google banner is around 38-42px depending on
+      browser zoom. If you see the top of the dashboard clipped,
+      reduce this value. If you see a slice of the banner, increase it.
   */
+
+  :root {
+    --banner-height: 40px;
+  }
 
   html, body {
     margin: 0;
@@ -33,17 +36,20 @@
     top: 0;
     left: 0;
     width: 100vw;
-    /* Height = viewport + 40px (the banner height) so the iframe overflows the top */
-    height: calc(100vh + 40px);
+    /* Visible viewport — iframe will overflow above this */
+    height: 100vh;
+    overflow: hidden;
   }
 
   iframe {
     position: absolute;
-    /* Push iframe UP by 40px so the banner is clipped above the visible area */
-    top: -40px;
+    /* Push iframe UP so the banner sits above the visible area.
+       The iframe is taller than the viewport by the banner height,
+       so the dashboard content fills the visible area exactly. */
+    top: calc(-1 * var(--banner-height));
     left: 0;
     width: 100%;
-    height: 100%;
+    height: calc(100% + var(--banner-height));
     border: 0;
     display: block;
     background: #061423;
@@ -54,13 +60,12 @@
 
 <div class="frame-wrapper">
   <!--
-    Replace the src URL below with YOUR Apps Script web app URL
-    (the same URL you bookmarked on the Fire Stick previously).
+    Replace the src URL below with YOUR Apps Script web app URL.
     It should look like:
       https://script.google.com/macros/s/AKfycb.../exec
   -->
   <iframe
-    src="https://script.google.com/macros/s/AKfycbxlo2tpLKfkYzF9Zx_4zcUD7HfCQbjO4y89W6yj0Hz25niJ3xh2eNaFgxSp9NYeNsuHVw/exec"
+    src="REPLACE_WITH_YOUR_APPS_SCRIPT_URL"
     allow="autoplay"
     title="Darul Ihsaan Live Fundraiser">
   </iframe>
