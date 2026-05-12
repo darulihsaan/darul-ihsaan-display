@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Darul Ihsaan — Live Fundraiser</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  /*
+    BANNER REMOVAL WRAPPER
+
+    Google Apps Script web apps include a 40px branded banner at the top
+    that says "This application was created by a Google Apps Script user".
+    It cannot be hidden from inside the Apps Script itself (it lives in a
+    Google-controlled iframe outer shell).
+
+    The fix: embed the Apps Script URL in our OWN iframe, but make the
+    iframe taller than the viewport, positioned with its top scrolled past
+    the banner. The banner is technically still rendered, but pushed off
+    the top edge of the visible area.
+  */
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    background: #061423;
+  }
+
+  .frame-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    /* Height = viewport + 40px (the banner height) so the iframe overflows the top */
+    height: calc(100vh + 40px);
+  }
+
+  iframe {
+    position: absolute;
+    /* Push iframe UP by 40px so the banner is clipped above the visible area */
+    top: -40px;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display: block;
+    background: #061423;
+  }
+</style>
+</head>
+<body>
+
+<div class="frame-wrapper">
+  <!--
+    Replace the src URL below with YOUR Apps Script web app URL
+    (the same URL you bookmarked on the Fire Stick previously).
+    It should look like:
+      https://script.google.com/macros/s/AKfycb.../exec
+  -->
+  <iframe
+    src="REPLACE_WITH_YOUR_APPS_SCRIPT_URL"
+    allow="autoplay"
+    title="Darul Ihsaan Live Fundraiser">
+  </iframe>
+</div>
+
+</body>
+</html>
